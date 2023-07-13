@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Profile</title>
+</head>
+<body>
+<h1>Welcome to Admin menu</h1>
+<button id="createGalleryButton">Create a Gallery</button>
+<script>
+  document.getElementById("createGalleryButton").addEventListener("click", function() {
+    // Make an HTTP request to the server
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/create-gallery");
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+             window.location.href = "/go-to-creating-the-gallery";
+        } else {
+          console.log("Failed to create gallery");
+          // Handle any errors or display an error message
+        }
+      }
+    };
+    xhr.send();
+  });
+</script>
+</body>
+</html>

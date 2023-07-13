@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Creating gallery</title>
+</head>
+<body>
+<h1>Create new gallery</h1>
+<form id="uploadForm" enctype="multipart/form-data">
+  <label for="galleryName">Gallery Name:</label>
+  <input type="text" id="galleryName" name="galleryName" required>
+  <br>
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" required>
+  <br>
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required>
+  <br>
+  <input type="file" id="photo" name="photo" accept="image/*" multiple required>
+  <br>
+  <button type="submit">Upload</button>
+</form>
+<script>
+    document.getElementById("uploadForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        var galleryName = document.getElementById("galleryName").value;
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var photoFiles = document.getElementById("photo").files;
+
+        var formData = new FormData();
+        formData.append("galleryName", galleryName);
+        formData.append("username", username);
+        formData.append("password", password);
+
+        for (var i = 0; i < photoFiles.length; i++) {
+            formData.append("photos", photoFiles[i]);
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/upload");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log("Upload successful");
+                    window.location.href = "/admin";
+                } else {
+                    console.log("Upload failed");
+                    // Handle any errors or display an error message
+                }
+            }
+        };
+        xhr.send(formData);
+    });
+</script>
+
+</body>
+</html>
